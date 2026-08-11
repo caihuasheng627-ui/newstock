@@ -1,0 +1,28 @@
+﻿.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.idea/
+.vscode/
+.workbuddy/
+
+# large / local-only
+data/stock_data.csv
+data/fetch_log.txt
+data/failed_stocks.csv
+data/hs300_stock_list.csv
+*.pth.bak
+train_log.txt
+*.zip
+*.tar
+nul
+code/files/
+code/train.zip
+code/src/__pycache__/
+
+# logs / caches
+*.log
+.ipynb_checkpoints/
+model/**/log/

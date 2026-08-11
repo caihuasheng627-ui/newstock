@@ -1,0 +1,2 @@
+Best epoch: 6
+Best weighted_port_return: 0.010363

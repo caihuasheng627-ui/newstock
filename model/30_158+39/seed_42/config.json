@@ -1,0 +1,40 @@
+{
+    "sequence_length": 30,
+    "d_model": 128,
+    "nhead": 4,
+    "num_layers": 2,
+    "dim_feedforward": 256,
+    "batch_size": 8,
+    "num_epochs": 80,
+    "learning_rate": 0.0002,
+    "dropout": 0.35,
+    "feature_num": "158+39",
+    "max_grad_norm": 1.0,
+    "use_clip": true,
+    "warmup_epochs": 5,
+    "weight_decay": 0.002,
+    "cross_stock_layers": 2,
+    "early_stopping_patience": 12,
+    "seed": 42,
+    "ensemble_seeds": [
+        42,
+        123
+    ],
+    "output_dir": "./model/30_158+39",
+    "data_path": "./data",
+    "train_leader_ratio": 0.75,
+    "leader_lookback_days": 30,
+    "predict_use_leader_pool": true,
+    "top_k_output": 5,
+    "top_k_weights": [
+        0.5,
+        0.47,
+        0.01,
+        0.01,
+        0.01
+    ],
+    "topk_mle_k": 3,
+    "portfolio_loss_weight": 0.4,
+    "portfolio_temperature": 0.35,
+    "selection_metric": "weighted_port_return"
+}

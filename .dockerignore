@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.git
+.venv
+.vscode
+.idea
+.workbuddy
+*.zip
+*.tar
+train_log.txt
+nul
