@@ -1,4 +1,5 @@
 ﻿.venv/
+.venv_old_*/
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -8,12 +9,11 @@ __pycache__/
 .vscode/
 .workbuddy/
 
-# large / local-only
+# local-only / regenerable
 data/stock_data.csv
 data/fetch_log.txt
 data/failed_stocks.csv
 data/hs300_stock_list.csv
-*.pth.bak
 train_log.txt
 *.zip
 *.tar
@@ -21,8 +21,11 @@ nul
 code/files/
 code/train.zip
 code/src/__pycache__/
+asset/
 
 # logs / caches
 *.log
 .ipynb_checkpoints/
 model/**/log/
+temp/*
+!temp/.gitkeep

@@ -40,10 +40,9 @@ source .venv/bin/activate
 
 未使用外部预训练权重。模型从随机初始化开始训练（Xavier 初始化），训练产物保存在 `model/`。
 
-当前提交使用的主模型目录：`model/30_158+39/`（`sequence_length=30`，特征 `158+39`），包含多随机种子权重：
+当前提交使用的主模型目录：`model/30_158+39/`（`sequence_length=30`，特征 `158+39`），单种子：
 
 - `seed_42/best_model.pth`
-- `seed_123/best_model.pth`
 - 以及对应的 `scaler.pkl`、`stockid2idx.pkl`、`train_medians.pkl`、`leader_stock_ids.pkl`、`config.json`
 
 ## 算法
@@ -61,8 +60,8 @@ source .venv/bin/activate
 ### 方法的创新点（如果有）
 
 - **Top-K ListMLE + 可微组合收益**联合损失，直接对齐“重仓头部股票”目标；
-- **龙头股池筛选**（按近期成交额保留头部比例），降低噪声票干扰；
-- **多 seed 集成**预测时取均值，提升稳定性；
+- **龙头股池筛选**（按近期成交额保留约 70%），降低噪声票干扰；
+- 固定单 seed（42）保证从训练起可复现；
 - 推理阶段对极端波动股票做风险过滤。
 
 ### 网络结构
@@ -79,12 +78,9 @@ source .venv/bin/activate
 
 ### 损失函数
 
-`CombinedRankingLoss`：
+`CombinedRankingLoss` / Top-K ListMLE（`topk_mle_k=5`，`portfolio_loss_weight=0` 即纯 ListMLE）。
 
-- Top-K ListMLE（默认 `topk_mle_k=3`）
-- 可微 SoftTopK 组合收益辅助项（`portfolio_loss_weight=0.4`）
-
-选模指标：验证集加权组合绝对收益 `weighted_port_return`。
+选模指标：`weighted_final_score`（按提交权重计算的相对分数）。
 
 ### 数据扩增
 
@@ -97,12 +93,12 @@ source .venv/bin/activate
 
 ### 模型集成
 
-训练 `ensemble_seeds=[42, 123]`；推理时加载各 seed 的 `best_model.pth`，对分数取均值后再排序选股。
+训练 `ensemble_seeds=[42]`（单种子）；推理加载对应 `best_model.pth` 后排序选股。
 
 ### 算法的其他细节
 
 - 输出 Top5，权重：`[0.50, 0.47, 0.01, 0.01, 0.01]`
-- `train_leader_ratio=0.75`，`leader_lookback_days=30`
+- `train_leader_ratio=0.70`，`leader_lookback_days=30`
 - 推理可限制在训练保存的龙头池内
 - 固定随机种子以保证可复现
 
@@ -168,4 +164,4 @@ docker save -o 队伍名称.tar bdc2026:latest
 ```
 
 5. `data/run.sh` 默认执行 `init.sh` + `test.sh`（训练步骤可按复现需要取消注释 `train.sh`）。
-6. 本地打分参考：`python test/score_self.py` 或 `python code/src/score_self.py`。
+6. 本地打分参考：`python test/score_self.py`。
